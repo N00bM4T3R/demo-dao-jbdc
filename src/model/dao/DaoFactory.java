@@ -9,4 +9,5 @@ public class DaoFactory {
 		return new SellerDaoJdbc(DB.getConnection());
 	}
 
+
 }
