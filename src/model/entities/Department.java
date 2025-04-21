@@ -11,6 +11,8 @@ public class Department implements Serializable{
 	private String name;
 	
 	public Department() {}
+	
+	
 
 	public Department(int id, String name) {
 		super();
