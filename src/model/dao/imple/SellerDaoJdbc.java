@@ -44,7 +44,9 @@ public class SellerDaoJdbc implements SellerDao {
 			ps.setDouble(4, obj.getBaseSalary());
 			ps.setInt(5,obj.getDepartment().getId());
 			
+			
 			long rows = ps.executeUpdate();
+			
 			if (rows > 0) {
 				ResultSet rs = ps.getGeneratedKeys();
 				if (rs.next()) {
@@ -68,13 +70,53 @@ public class SellerDaoJdbc implements SellerDao {
 
 	@Override
 	public void upDate(Seller obj) {
-		// TODO Auto-generated method stub
+PreparedStatement ps = null;
 		
+		try {
+			ps = conn.prepareStatement("UPDATE seller\r\n"
+					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\r\n"
+					+ "WHERE Id = ?"
+					);
+		
+			
+			ps.setString(1, obj.getName());
+			ps.setString(2, obj.getEmail());
+			ps.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			ps.setDouble(4, obj.getBaseSalary());
+			ps.setInt(5,obj.getDepartment().getId());
+			ps.setInt(6, obj.getId());
+			
+			ps.execute();
+			
+			
+			
+		}
+		catch (SQLException e) {
+			throw new DbExcepition(e.getMessage());
+		}
+		finally {
+			DB.closeStaman(ps);;
+		}
 	}
 
 	@Override
 	public void deletById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		
+		try {
+			ps = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			
+			ps.setInt(1, id);
+			ps.execute();
+			
+		}
+		catch (SQLException e) {
+			throw new DbExcepition(e.getMessage());
+			
+		}
+		finally {
+			DB.closeStaman(ps);
+		}
 		
 	}
 
